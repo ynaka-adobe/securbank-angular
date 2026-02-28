@@ -1,7 +1,9 @@
 @if (data) {
   <section class="service-detail">
     @if (image) {
-      <app-image [src]="image" alt="" prop="icon"></app-image>
+      <div class="service-detail-image-wrapper">
+        <app-image [src]="image" alt="" prop="icon" class-name="service-detail-image" [width]="498" [height]="398" objectFit="cover"></app-image>
+      </div>
     }
     @if (category) {
       <span class="category">{{ category }}</span>

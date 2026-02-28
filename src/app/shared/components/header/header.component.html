@@ -9,15 +9,19 @@
       </nav>
     </div>
     <div class="buttons-wrapper">
-      @if (isAuthenticated) {
-        @if (userName) {
-          <span class="user-greeting">Hi, {{ userName }}</span>
+      @if (isOktaEnabled) {
+        @if (isAuthenticated) {
+          @if (userName) {
+            <span class="user-greeting">Hi, {{ userName }}</span>
+          } @else {
+            <span class="user-greeting">Hi, User</span>
+          }
+          <app-redirect-button [customClick]="true" (clicked)="signOut()" class-name="secondary" label="Sign Out"></app-redirect-button>
+        } @else {
+          <app-redirect-button [customClick]="true" (clicked)="signIn()" class-name="transparent" label="Sign In"></app-redirect-button>
         }
-        <button class="secondary" type="button">Sign Out</button>
-      } @else {
-        <button class="transparent" type="button">Sign In</button>
       }
-      <app-redirect-button href="/" className="button">Open an Account</app-redirect-button>
+      <app-redirect-button href="/" class-name="button">Open an Account</app-redirect-button>
     </div>
   </div>
 </header>

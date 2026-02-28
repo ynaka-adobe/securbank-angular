@@ -1,15 +1,19 @@
 <app-content-fragment [cf]="cf">
-  <div class="service-card card-vertical">
+  <div class="service-card-wrapper card-horizontal">
     @if (image) {
-      <app-image [src]="image" alt="" prop="icon"></app-image>
+      <div class="service-card-image-wrapper">
+        <app-image [src]="image" alt="" prop="icon" class-name="service-card-image" [width]="498" [height]="398" objectFit="cover"></app-image>
+      </div>
     }
-    @if (category) {
-      <span class="category">{{ category }}</span>
-    }
-    <app-title heading="h3" prop="title">{{ title }}</app-title>
-    @if (content) {
-      <app-text [content]="content" prop="description"></app-text>
-    }
-    <button type="button" class="secondary" (click)="goTo(path)">Learn More</button>
+    <div class="right-wrapper">
+      @if (category) {
+        <span class="category">{{ category }}</span>
+      }
+      <app-title heading="h3" prop="title">{{ title }}</app-title>
+      @if (content) {
+        <app-text [content]="content" prop="description"></app-text>
+      }
+      <button type="button" class="secondary" (click)="goTo(path)">Learn More</button>
+    </div>
   </div>
 </app-content-fragment>

@@ -33,7 +33,7 @@ export class AuthService {
     if (this.serviceTokenCache.token && this.serviceTokenCache.expiresAt && Date.now() < this.serviceTokenCache.expiresAt) {
       return this.serviceTokenCache.token;
     }
-    return null;
+    return environment.serviceToken || null;
   }
 
   setServiceToken(token: string, expiresIn = 3600): void {

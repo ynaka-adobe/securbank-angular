@@ -1,7 +1,9 @@
 <app-content-fragment [cf]="cf">
   <div class="article-card card-vertical">
     @if (image) {
-      <app-image [src]="image" alt="" prop="image"></app-image>
+      <div class="article-card-image-wrapper">
+        <app-image [src]="image" alt="" prop="image" class-name="article-card-image" [width]="498" [height]="398" objectFit="cover"></app-image>
+      </div>
     }
     <app-title heading="h3" prop="title">{{ title }}</app-title>
     <app-redirect-button [href]="path">Learn More</app-redirect-button>

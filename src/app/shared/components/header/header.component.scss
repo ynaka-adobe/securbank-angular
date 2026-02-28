@@ -16,20 +16,25 @@ header {
     display: flex;
     align-items: center;
     gap: 58px;
+    margin-left: -150px;
 
     nav {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       gap: 36px;
 
       a {
-        color: $color-grey-0;
+        color: #64748b;
         font-weight: $font-weight-regular;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 8px;
 
         &.active {
           font-weight: $font-weight-semibold;
-          color: $color-primary-300;
+          color: #67e8f9;
+          background-color: #082f49;
         }
       }
     }
@@ -41,9 +46,8 @@ header {
     align-items: center;
     gap: 12px;
 
-    button {
-      height: 40px;
-      padding: 12px 20px;
+    a.button.secondary {
+      border-color: $color-grey-0;
     }
 
     .user-greeting {

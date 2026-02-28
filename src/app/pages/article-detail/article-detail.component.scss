@@ -1,4 +1,18 @@
 .article-detail-page {
   padding: 40px 80px;
   max-width: 800px;
+
+  .article-detail-image-wrapper {
+    flex-shrink: 0;
+    width: 498px;
+    height: 398px;
+    overflow: hidden;
+
+    ::ng-deep img {
+      display: block;
+      width: 498px !important;
+      height: 398px !important;
+      object-fit: cover;
+    }
+  }
 }

@@ -1,15 +1,60 @@
 @use '../../../../../styles/variables' as *;
 
-.service-card {
+.service-card-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 24px;
+  align-self: stretch;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 24px;
+  color: $color-grey-900;
 
-  .category {
-    font-size: 12px;
-    text-transform: uppercase;
-    color: $color-primary-300;
-    font-weight: $font-weight-medium;
+  .service-card-image-wrapper {
+    flex-shrink: 0;
+    width: 498px;
+    height: 398px;
+    overflow: hidden;
+
+    ::ng-deep img {
+      display: block;
+      width: 498px !important;
+      height: 398px !important;
+      object-fit: cover;
+    }
+  }
+
+  .right-wrapper {
+    display: flex;
+    padding: 24px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+
+    .category {
+      padding: 5px 10px;
+      text-align: center;
+      border-radius: 1000px;
+      background: $color-primary-25;
+      font-size: $font-size-medium;
+      font-weight: $font-weight-medium;
+      color: $color-secondary-300;
+    }
+  }
+
+  button {
+    height: 48px;
+    margin-top: 24px;
+
+    &.secondary {
+      border: 1px solid $color-grey-100;
+      background-color: $color-grey-0;
+      color: $color-grey-900;
+
+      &:hover {
+        border-color: $color-grey-900;
+        background-color: $color-grey-0;
+      }
+    }
   }
 }

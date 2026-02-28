@@ -6,6 +6,20 @@
   gap: 24px;
   padding: 24px 0;
 
+  .service-detail-image-wrapper {
+    flex-shrink: 0;
+    width: 498px;
+    height: 398px;
+    overflow: hidden;
+
+    ::ng-deep img {
+      display: block;
+      width: 498px !important;
+      height: 398px !important;
+      object-fit: cover;
+    }
+  }
+
   .category {
     font-size: 12px;
     text-transform: uppercase;
