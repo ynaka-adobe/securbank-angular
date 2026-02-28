@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { OktaAuth, AuthState } from '@okta/okta-auth-js';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -10,6 +11,7 @@ export interface OktaAuthState {
 
 @Injectable({ providedIn: 'root' })
 export class OktaAuthService {
+  private readonly router = inject(Router);
   private oktaAuth: OktaAuth | null = null;
   private authStateSubject = new BehaviorSubject<OktaAuthState>({
     isAuthenticated: false
@@ -46,6 +48,10 @@ export class OktaAuthService {
         tokenManager: {
           autoRenew: true,
           storage: 'sessionStorage'
+        },
+        restoreOriginalUri: async (_oktaAuth, originalUri) => {
+          const target = originalUri || '/';
+          await this.router.navigateByUrl(target);
         }
       });
 
