@@ -1,3 +1,5 @@
+@use '../../../../../styles/variables' as *;
+
 .service-detail {
   display: flex;
   flex-direction: column;
@@ -7,5 +9,7 @@
   .category {
     font-size: 12px;
     text-transform: uppercase;
+    color: $color-primary-300;
+    font-weight: $font-weight-medium;
   }
 }

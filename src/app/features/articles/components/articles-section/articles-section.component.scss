@@ -1,4 +1,10 @@
 .articles-section {
+  padding: 24px 80px 64px;
+
+  h2 {
+    margin-bottom: 24px;
+  }
+
   .articles-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

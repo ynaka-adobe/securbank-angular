@@ -1,8 +1,11 @@
 .services-section {
+  padding: 24px 0 48px;
+
   .selector-buttons {
     display: flex;
     gap: 12px;
     margin-bottom: 24px;
+    justify-content: center;
   }
 
   .services-grid {

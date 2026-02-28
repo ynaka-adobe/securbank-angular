@@ -1,7 +1,12 @@
+@use '../../../styles/variables' as *;
+
 .home-page {
+  padding: 0 80px 64px;
+
   .selector-buttons {
     display: flex;
     gap: 12px;
-    padding: 24px 80px;
+    padding: 24px 0;
+    justify-content: center;
   }
 }

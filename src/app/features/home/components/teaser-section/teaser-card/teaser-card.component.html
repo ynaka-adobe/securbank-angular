@@ -1,12 +1,14 @@
 <app-content-fragment [cf]="cf">
-  <div class="teaser-card card-vertical">
+  <div class="teaser-card card-vertical" [class.content-right]="index % 2 === 1">
+    <div class="teaser-card-content">
+      <app-title heading="h3" prop="title">{{ title }}</app-title>
+      @if (content) {
+        <app-text [content]="content" prop="description"></app-text>
+      }
+      <app-redirect-button [href]="path">Learn More</app-redirect-button>
+    </div>
     @if (image) {
-      <app-image [src]="image" alt="" prop="icon"></app-image>
+      <app-image [src]="image" alt="" prop="icon" className="teaser-card-image"></app-image>
     }
-    <app-title heading="h3" prop="title">{{ title }}</app-title>
-    @if (content) {
-      <app-text [content]="content" prop="description"></app-text>
-    }
-    <app-redirect-button [href]="path">Learn More</app-redirect-button>
   </div>
 </app-content-fragment>
