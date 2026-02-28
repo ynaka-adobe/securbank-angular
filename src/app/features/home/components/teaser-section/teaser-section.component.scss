@@ -1,5 +1,18 @@
+@use '../../../../../styles/variables' as *;
+
 .teaser-section {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  padding: 48px 0;
+
+  h2 {
+    padding: 0 80px;
+  }
+
+  ::ng-deep .teaser-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
 }

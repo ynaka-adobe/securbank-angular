@@ -1,7 +1,26 @@
+@use '../../../../../styles/variables' as *;
+
 .hero {
+  padding: 48px 80px 64px;
+
   .hero-content {
     display: flex;
     gap: 40px;
     align-items: flex-start;
+
+    ::ng-deep .hero-image {
+      width: 550px;
+      height: 310px;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+  }
+
+  // Ensure hero content text is visible on dark background (CMS may inject dark text)
+  ::ng-deep app-text p,
+  ::ng-deep app-text div {
+    color: $color-grey-50 !important;
+    max-width: 60ch;
+    line-height: $line-height-default;
   }
 }

@@ -3,9 +3,9 @@
     @if (title) {
       <h2>{{ title }}</h2>
     }
-    <app-container>
+    <app-container className="teaser-grid">
       @for (teaser of cfs; track $index) {
-        <app-teaser-card [cf]="$any(teaser)"></app-teaser-card>
+        <app-teaser-card [cf]="$any(teaser)" [index]="$index"></app-teaser-card>
       }
     </app-container>
   </section>

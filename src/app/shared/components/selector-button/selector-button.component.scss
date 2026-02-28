@@ -1,6 +1,17 @@
+@use '../../../../styles/variables' as *;
+
 .selector-button {
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: $font-size-large;
+  font-weight: $font-weight-medium;
+  border: 2px solid transparent;
+  background-color: transparent;
+  color: $color-grey-0;
+
   &.selected {
-    background-color: var(--color-primary-100, #cffafe) !important;
-    border-color: var(--color-secondary-300, #082f49) !important;
+    background-color: $color-primary-300 !important;
+    border-color: $color-primary-300 !important;
+    color: $color-grey-0 !important;
   }
 }

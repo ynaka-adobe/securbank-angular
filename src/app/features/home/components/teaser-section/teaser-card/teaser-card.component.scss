@@ -1,6 +1,30 @@
 .teaser-card {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
   padding: 24px;
+
+  &.content-right {
+    flex-direction: row-reverse;
+  }
+
+  .teaser-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+  }
+
+  ::ng-deep .teaser-card-image {
+    width: 498px;
+    height: 448px;
+    flex-shrink: 0;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
 }

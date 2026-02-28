@@ -14,6 +14,7 @@ import { RedirectButtonComponent } from '../../../../../shared/components/redire
 })
 export class TeaserCardComponent {
   @Input() cf: Record<string, unknown> = {};
+  @Input() index = 0;
 
   get image(): string {
     const icon = this.cf?.['icon'] as { _dynamicUrl?: string } | undefined;
