@@ -1,0 +1,6 @@
+.selector-button {
+  &.selected {
+    background-color: var(--color-primary-100, #cffafe) !important;
+    border-color: var(--color-secondary-300, #082f49) !important;
+  }
+}

@@ -1,0 +1,11 @@
+.service-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+
+  .category {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+}

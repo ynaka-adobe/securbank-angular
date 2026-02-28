@@ -1,0 +1,15 @@
+<app-content-fragment [cf]="cf">
+  <div class="service-card card-vertical">
+    @if (image) {
+      <app-image [src]="image" alt="" prop="icon"></app-image>
+    }
+    @if (category) {
+      <span class="category">{{ category }}</span>
+    }
+    <app-title heading="h3" prop="title">{{ title }}</app-title>
+    @if (content) {
+      <app-text [content]="content" prop="description"></app-text>
+    }
+    <button type="button" class="secondary" (click)="goTo(path)">Learn More</button>
+  </div>
+</app-content-fragment>

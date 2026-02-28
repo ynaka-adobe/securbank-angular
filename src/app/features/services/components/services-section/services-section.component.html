@@ -1,0 +1,16 @@
+<section class="services-section">
+  <div class="selector-buttons">
+    @for (cat of categorisedServices | keyvalue; track cat.key) {
+      <app-selector-button
+        [isSelected]="selectedCategory === cat.key"
+        (onClick)="selectCategory(cat.key)">
+        {{ cat.key }}
+      </app-selector-button>
+    }
+  </div>
+  <div class="services-grid">
+    @for (service of getServices(); track $index) {
+      <app-service-card [cf]="$any(service)"></app-service-card>
+    }
+  </div>
+</section>

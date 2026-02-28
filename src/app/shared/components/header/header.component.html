@@ -1,0 +1,23 @@
+<header>
+  <div class="header">
+    <app-logo variant="light"></app-logo>
+    <div class="navigations-wrapper">
+      <nav>
+        @for (nav of navigations; track nav.href) {
+          <a [routerLink]="nav.href" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">{{ nav.label }}</a>
+        }
+      </nav>
+    </div>
+    <div class="buttons-wrapper">
+      @if (isAuthenticated) {
+        @if (userName) {
+          <span class="user-greeting">Hi, {{ userName }}</span>
+        }
+        <button class="secondary" type="button">Sign Out</button>
+      } @else {
+        <button class="transparent" type="button">Sign In</button>
+      }
+      <app-redirect-button href="/" className="button">Open an Account</app-redirect-button>
+    </div>
+  </div>
+</header>

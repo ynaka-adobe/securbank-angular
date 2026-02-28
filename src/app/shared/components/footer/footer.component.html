@@ -1,0 +1,29 @@
+<footer>
+  <div class="footer">
+    <div class="top-wrapper">
+      <div class="categories-wrapper">
+        @for (category of categories() | keyvalue; track category.key) {
+          <div class="category-wrapper">
+            <h4>{{ category.key }}</h4>
+            <nav>
+              @for (link of category.value; track link.href + link.label) {
+                <a [routerLink]="link.href">{{ link.label }}</a>
+              }
+            </nav>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="bottom-wrapper">
+      <div class="rights-wrapper">
+        <app-logo variant="dark"></app-logo>
+        <span>2024 SecurBank. All rights reserved</span>
+      </div>
+      <div class="social-media-wrapper">
+        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        <a href="#" aria-label="Twitter">Twitter</a>
+        <a href="#" aria-label="Facebook">Facebook</a>
+      </div>
+    </div>
+  </div>
+</footer>

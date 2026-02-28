@@ -1,0 +1,12 @@
+@if (cfs && cfs.length) {
+  <section class="teaser-section">
+    @if (title) {
+      <h2>{{ title }}</h2>
+    }
+    <app-container>
+      @for (teaser of cfs; track $index) {
+        <app-teaser-card [cf]="$any(teaser)"></app-teaser-card>
+      }
+    </app-container>
+  </section>
+}

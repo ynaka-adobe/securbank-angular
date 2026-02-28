@@ -1,0 +1,14 @@
+<section class="hero content-wrapper">
+  <div class="hero-content content-button-wrapper">
+    @if (image) {
+      <app-image [src]="image" alt="" prop="image" className="hover-effect"></app-image>
+    }
+    <div class="content-wrapper">
+      <app-title heading="h1" prop="title"><ng-container>{{ title }}</ng-container></app-title>
+      @if (content) {
+        <app-text [content]="content" prop="content"></app-text>
+      }
+      <app-redirect-button href="/services" className="content-button-wrapper">Our Services</app-redirect-button>
+    </div>
+  </div>
+</section>
