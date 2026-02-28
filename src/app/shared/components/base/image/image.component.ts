@@ -6,7 +6,7 @@ import { getURI } from '../../../utils/get-uri';
   selector: 'app-image',
   standalone: true,
   imports: [CommonModule],
-  template: '<img [src]="imageSrc" [alt]="alt" [class]="className" [attr.data-aue-prop]="prop" [attr.data-aue-type]="type || \'media\'" [attr.data-aue-label]="displayLabel" />'
+  template: '<img [src]="imageSrc" [alt]="alt" [class]="className" [attr.width]="width ?? null" [attr.height]="height ?? null" [style.width.px]="width ?? null" [style.height.px]="height ?? null" [style.object-fit]="width && height ? objectFit : null" [attr.data-aue-prop]="prop" [attr.data-aue-type]="type || \'media\'" [attr.data-aue-label]="displayLabel" />'
 })
 export class ImageComponent {
   @Input() src = '';
@@ -16,9 +16,12 @@ export class ImageComponent {
   @Input() type = 'media';
   @Input() label = '';
   @Input() behavior = '';
+  @Input() width?: number;
+  @Input() height?: number;
+  @Input() objectFit: 'fill' | 'contain' | 'cover' | 'none' = 'cover';
 
   get imageSrc(): string {
-    return getURI(this.src);
+    return getURI(this.src, { width: this.width, height: this.height });
   }
 
   get displayLabel(): string {

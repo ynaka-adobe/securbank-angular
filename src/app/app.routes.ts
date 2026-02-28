@@ -5,9 +5,11 @@ import { ServicesComponent } from './pages/services/services.component';
 import { ArticleDetailComponent } from './pages/article-detail/article-detail.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ContentRedirectComponent } from './pages/content-redirect/content-redirect.component';
+import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 
 export const routes: Routes = [
   { path: 'content', pathMatch: 'prefix', component: ContentRedirectComponent },
+  { path: 'login/callback', component: LoginCallbackComponent },
   { path: '', component: HomeComponent },
   { path: 'articles', component: ArticlesComponent },
   { path: 'articles/:slug', component: ArticleDetailComponent },

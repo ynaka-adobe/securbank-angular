@@ -1,7 +1,9 @@
 @if (data) {
   <main class="article-detail-page">
     @if (image) {
-      <app-image [src]="image" alt="" prop="image"></app-image>
+      <div class="article-detail-image-wrapper">
+        <app-image [src]="image" alt="" prop="image" class-name="article-detail-image" [width]="498" [height]="398" objectFit="cover"></app-image>
+      </div>
     }
     <app-title heading="h1" prop="title">{{ title }}</app-title>
     @if (content) {

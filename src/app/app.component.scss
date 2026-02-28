@@ -30,25 +30,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 button {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 12px 20px;
+  padding: 16px 24px;
   gap: 8px;
   border: none;
-  border-radius: 8px;
+  border-radius: 1000px;
   cursor: pointer;
   background-color: $color-primary-300;
-  color: $color-grey-0;
+  color: $color-secondary-300;
   font-size: $font-size-large;
   font-weight: $font-weight-semibold;
 
   &:focus, &:active {
-    background-color: $color-primary-400;
+    background-color: $color-primary-100;
   }
 
   &.secondary {
-    border: 2px solid $color-grey-0;
+    border: 1px solid $color-grey-100;
     background-color: transparent;
     color: $color-grey-0;
 
@@ -58,13 +58,13 @@ button {
   }
 
   &.transparent {
-    background-color: $color-grey-0;
-    border: 2px solid $color-grey-0;
-    color: $color-secondary-100;
+    background-color: transparent;
+    border: 1px solid $color-grey-0;
+    color: $color-grey-0;
 
     &:focus, &:active {
-      background-color: $color-grey-25;
-      border-color: $color-grey-25;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: $color-grey-0;
     }
   }
 }
@@ -82,22 +82,22 @@ a {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 12px 20px;
+    padding: 16px 24px;
     gap: 8px;
     border: none;
-    border-radius: 8px;
+    border-radius: 1000px;
     cursor: pointer;
     background-color: $color-primary-300;
-    color: $color-grey-0 !important;
+    color: $color-secondary-300 !important;
     font-size: $font-size-large;
     font-weight: $font-weight-semibold;
 
     &:hover {
-      background-color: $color-primary-400;
+      background-color: $color-primary-100;
     }
 
     &.secondary {
-      border: 2px solid $color-grey-0;
+      border: 1px solid $color-grey-100;
       background-color: transparent;
       color: $color-grey-0 !important;
 
@@ -107,13 +107,13 @@ a {
     }
 
     &.transparent {
-      border: 2px solid $color-grey-0;
-      background-color: $color-grey-0;
-      color: $color-secondary-100 !important;
+      background-color: transparent;
+      border: 1px solid $color-grey-0;
+      color: $color-grey-0 !important;
 
       &:hover {
-        background-color: $color-grey-25;
-        border-color: $color-grey-25;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: $color-grey-0;
       }
     }
   }
