@@ -1,0 +1,8 @@
+@use './styles/variables' as *;
+
+body {
+  margin: 0;
+  font-family: $font-family-inter-tight, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

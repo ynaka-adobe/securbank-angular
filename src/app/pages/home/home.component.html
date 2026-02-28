@@ -1,0 +1,18 @@
+@if (data && categories[selectedVariation]) {
+  <div class="home-page">
+    <div class="selector-buttons">
+      @for (item of categories | keyvalue; track item.key) {
+        <app-selector-button
+          [isSelected]="selectedVariation === item.key"
+          (onClick)="selectVariation(item.key)">
+          {{ item.value }}
+        </app-selector-button>
+      }
+    </div>
+    <app-hero [image]="image" [title]="title" [content]="content"></app-hero>
+    @if (featuredServices && featuredServices.length) {
+      <app-teaser-section [title]="'Featured Services'" [cfs]="featuredServices"></app-teaser-section>
+    }
+    <app-call-to-action-section></app-call-to-action-section>
+  </div>
+}

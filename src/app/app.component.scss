@@ -1,0 +1,123 @@
+@use '../styles/variables' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: $line-height-default;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background-color: $color-grey-0;
+  color: $color-grey-400;
+  font-family: $font-family-inter-tight;
+  font-size: $font-size-xlarge;
+  font-weight: $font-weight-regular;
+}
+
+main {
+  flex: 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: $line-height-heading;
+  font-weight: $font-weight-semibold;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  gap: 8px;
+  border: none;
+  border-radius: 1000px;
+  cursor: pointer;
+  background-color: $color-primary-300;
+  color: $color-secondary-300;
+  font-size: $font-size-large;
+  font-weight: $font-weight-semibold;
+
+  &:focus, &:active {
+    background-color: $color-primary-100;
+  }
+
+  &.secondary {
+    border: 1px solid $color-grey-100;
+    background-color: $color-grey-0;
+    color: $color-grey-900;
+
+    &:focus, &:active {
+      border: 1px solid $color-grey-900;
+    }
+  }
+
+  &.transparent {
+    background-color: transparent;
+    border: 1px solid $color-grey-100;
+    color: $color-grey-0;
+
+    &:focus, &:active {
+      border: 1px solid $color-grey-300;
+      color: $color-grey-200;
+    }
+  }
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+
+  &:visited {
+    text-decoration: none;
+  }
+}
+
+.container {
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  align-self: stretch;
+}
+
+.background-blue {
+  background-color: $color-secondary-300;
+}
+
+.color-light {
+  color: $color-grey-0;
+}
+
+.card-vertical {
+  border-radius: 24px;
+  border: 1px solid $color-grey-0;
+  background: $color-grey-0;
+  box-shadow: 0px 4px 11px -1px rgba(10, 10, 10, 0.04);
+}
+
+.hover-effect {
+  transition: all 0.4s cubic-bezier(0.47, 0, 0.23, 1.38);
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}

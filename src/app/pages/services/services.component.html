@@ -1,0 +1,9 @@
+@if (services && services.length) {
+  <main class="services-page">
+    @if (slug) {
+      <app-service-detail [slug]="slug"></app-service-detail>
+    }
+    <app-services-section [slug]="slug || ''" [cfs]="services"></app-services-section>
+    <app-call-to-action-section></app-call-to-action-section>
+  </main>
+}

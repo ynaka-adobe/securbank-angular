@@ -1,0 +1,11 @@
+.service-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 0;
+
+  .category {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+}

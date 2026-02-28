@@ -1,0 +1,13 @@
+@if (data) {
+  <main class="article-detail-page">
+    @if (image) {
+      <app-image [src]="image" alt="" prop="image"></app-image>
+    }
+    <app-title heading="h1" prop="title">{{ title }}</app-title>
+    @if (content) {
+      <app-text [content]="content" prop="content"></app-text>
+    }
+    <app-call-to-action-section></app-call-to-action-section>
+    <app-articles-section title="Related Articles" [cfs]="[]"></app-articles-section>
+  </main>
+}
