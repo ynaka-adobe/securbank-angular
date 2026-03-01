@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/securbank-angular",
+  "outputDirectory": "dist/securbank-angular/browser",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
