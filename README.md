@@ -62,7 +62,17 @@ npm run build
 
 ## Environment Variables
 
-Environment files are generated from `.env` before `npm start` and `npm run build`. See `env.example` for all `APP_*` variables. For production, create a backend proxy if using service tokens to keep credentials secure.
+Environment files are generated from `.env` before `npm start` and `npm run build`. See `env.example` for all `APP_*` variables.
+
+### Vercel Deployment
+
+Set these in **Vercel Project Settings → Environment Variables** (for Production):
+
+- `APP_HOST_URI`: AEM author URL
+- `APP_PUBLISH_URI`: AEM publish URL (used for GraphQL in production)
+- `APP_AUTH_METHOD`: `basic` or `none` (publish often allows `none` for public content)
+- `APP_BASIC_AUTH_USER` / `APP_BASIC_AUTH_PASS`: If using basic auth
+- `APP_OKTA_ISSUER`, `APP_OKTA_CLIENT_ID`, `APP_OKTA_REDIRECT_URI`: For Okta Sign In
 
 ## Okta SSO
 

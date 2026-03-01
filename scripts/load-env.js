@@ -10,23 +10,29 @@ function loadEnv() {
   const envPath = path.join(__dirname, '..', '.env');
   const result = {};
 
-  if (!fs.existsSync(envPath)) {
-    return result;
+  // Load from .env file (local dev)
+  if (fs.existsSync(envPath)) {
+    const content = fs.readFileSync(envPath, 'utf8');
+    content.split('\n').forEach((line) => {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#')) {
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx > 0) {
+          const key = trimmed.slice(0, eqIdx).trim();
+          let value = trimmed.slice(eqIdx + 1).trim();
+          if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+            value = value.slice(1, -1);
+          }
+          result[key] = value;
+        }
+      }
+    });
   }
 
-  const content = fs.readFileSync(envPath, 'utf8');
-  content.split('\n').forEach((line) => {
-    const trimmed = line.trim();
-    if (trimmed && !trimmed.startsWith('#')) {
-      const eqIdx = trimmed.indexOf('=');
-      if (eqIdx > 0) {
-        const key = trimmed.slice(0, eqIdx).trim();
-        let value = trimmed.slice(eqIdx + 1).trim();
-        if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-          value = value.slice(1, -1);
-        }
-        result[key] = value;
-      }
+  // Merge process.env (Vercel, CI, etc.) - APP_* vars override .env
+  Object.keys(process.env || {}).forEach((key) => {
+    if (key.startsWith('APP_') && process.env[key]) {
+      result[key] = process.env[key];
     }
   });
 
