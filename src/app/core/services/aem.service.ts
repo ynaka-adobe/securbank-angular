@@ -8,7 +8,9 @@ export class AemService {
   private client: AEMHeadless;
 
   constructor(private auth: AuthService) {
-    const serviceURL = environment.useProxy ? '/' : environment.hostUri;
+    const serviceURL = environment.useProxy
+      ? '/'
+      : (environment.publishUri || environment.hostUri);
     this.client = new AEMHeadless({
       serviceURL,
       endpoint: 'graphql/execute.json',
@@ -27,7 +29,8 @@ export class AemService {
 
   addAemHost(url: string): string {
     if (url.startsWith('/')) {
-      return new URL(url, environment.hostUri).toString();
+      const base = environment.publishUri || environment.hostUri;
+    return new URL(url, base).toString();
     }
     return url;
   }
