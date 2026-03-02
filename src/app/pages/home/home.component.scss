@@ -3,6 +3,12 @@
 .home-page {
   padding: 0 80px 64px;
 
+  aem-embed {
+    display: block;
+    width: 1200px;
+    height: 350px;
+  }
+
   .selector-buttons {
     display: flex;
     gap: 12px;
