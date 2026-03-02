@@ -7,6 +7,7 @@ Angular port of the [SecurBank](https://github.com/ynakagawa/SecurBank) sample a
 - **AEM Headless Integration**: Fetches content from Adobe Experience Manager via GraphQL persisted queries
 - **Pages**: Home, Articles, Services, Article Detail
 - **Authentication**: Supports service token auth and Okta SSO for Sign In / Sign Out (configure in environment)
+- **AEM Embed**: Optional header/footer embedding from AEM Edge Delivery projects via [aem-embed](https://www.aem.live/docs/aem-embed)
 
 ## Prerequisites
 
@@ -73,6 +74,39 @@ Set these in **Vercel Project Settings → Environment Variables** (for Producti
 - `APP_AUTH_METHOD`: `basic` or `none` (publish often allows `none` for public content)
 - `APP_BASIC_AUTH_USER` / `APP_BASIC_AUTH_PASS`: If using basic auth
 - `APP_OKTA_ISSUER`, `APP_OKTA_CLIENT_ID`, `APP_OKTA_REDIRECT_URI`: For Okta Sign In
+
+## AEM Embed
+
+Optional: Embed content (e.g. home hero, header, footer) from an [AEM Edge Delivery](https://www.aem.live/docs/aem-embed) or Document Authoring (DA) project using the `<aem-embed>` web component. Set `APP_AEM_EMBED_HEADER_URL` and/or `APP_AEM_EMBED_FOOTER_URL` to AEM.live page URLs. When set, the default Angular header/footer are replaced.
+
+### Configuring CORS on the AEM/DA Project
+
+For the embed to load from a different origin (e.g. `http://localhost:4200` or your deployed app), the AEM project must allow CORS. Per [AEM.live docs](https://www.aem.live/docs/aem-embed):
+
+1. **Using the Configuration Service** (recommended): Add a `headers` entry in your [site configuration](https://www.aem.live/docs/admin.html#tag/siteConfig):
+
+   ```json
+   {
+     "/fragments/**": [
+       {
+         "key": "access-control-allow-origin",
+         "value": "*"
+       }
+     ]
+   }
+   ```
+
+   Or restrict to your app origin(s):
+   ```json
+   {
+     "key": "access-control-allow-origin",
+     "value": "https://your-app.vercel.app"
+   }
+   ```
+
+2. **Apply changes**: Use the [HTTP Headers Editor](https://labs.aem.live/tools/headers-edit/index.html) or update via the [Admin API](https://www.aem.live/docs/config-service-setup#update-custom-headers). For the config service, see [custom headers setup](https://aem.live/docs/custom-headers).
+
+**Security note**: Using `*` can increase CSRF risk. Prefer listing specific origins when possible.
 
 ## Okta SSO
 

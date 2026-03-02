@@ -54,7 +54,9 @@ export const environment = {
   oktaIssuer: '${(env.APP_OKTA_ISSUER || '').replace(/'/g, "\\'")}',
   oktaClientId: '${(env.APP_OKTA_CLIENT_ID || '').replace(/'/g, "\\'")}',
   oktaRedirectUri: '${(env.APP_OKTA_REDIRECT_URI || '').replace(/'/g, "\\'")}',
-  oktaScopes: '${(env.APP_OKTA_SCOPES || 'openid profile email').replace(/'/g, "\\'")}'
+  oktaScopes: '${(env.APP_OKTA_SCOPES || 'openid profile email').replace(/'/g, "\\'")}',
+  aemEmbedHeaderUrl: '${(env.APP_AEM_EMBED_HEADER_URL || '').replace(/'/g, "\\'")}',
+  aemEmbedFooterUrl: '${(env.APP_AEM_EMBED_FOOTER_URL || '').replace(/'/g, "\\'")}'
 };
 `;
 }

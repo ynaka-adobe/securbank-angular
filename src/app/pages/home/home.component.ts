@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, KeyValuePipe } from '@angular/common';
-import { HeroComponent } from '../../features/home/components/hero/hero.component';
 import { SelectorButtonComponent } from '../../shared/components/selector-button/selector-button.component';
 import { TeaserSectionComponent } from '../../features/home/components/teaser-section/teaser-section.component';
 import { CallToActionSectionComponent } from '../../features/home/components/call-to-action-section/call-to-action-section.component';
@@ -11,10 +10,10 @@ import { snakeCaseToTitleCase } from '../../shared/utils/snake-case-to-title-cas
 @Component({
   selector: 'app-home',
   standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     KeyValuePipe,
-    HeroComponent,
     SelectorButtonComponent,
     TeaserSectionComponent,
     CallToActionSectionComponent
