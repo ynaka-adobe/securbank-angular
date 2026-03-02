@@ -1,7 +1,12 @@
 @use '../../../../../styles/variables' as *;
 
 .hero {
-  padding: 48px 80px 64px;
+  margin-top: 0;
+  padding: 0 80px 64px;
+  overflow: hidden;
+  align-self: center;
+  width: 100%;
+  box-sizing: border-box;
 
   .hero-content {
     display: flex;
