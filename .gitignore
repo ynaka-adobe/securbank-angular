@@ -25,3 +25,7 @@ npm-debug.log*
 # Environment
 .env
 .env.local
+
+# Auto-generated from .env (contains secrets when populated)
+src/environments/environment.ts
+src/environments/environment.prod.ts

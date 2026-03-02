@@ -9,7 +9,10 @@
         </app-selector-button>
       }
     </div>
-    <app-hero [image]="image" [title]="title" [content]="content"></app-hero>
+    @if (bannerUrl) {
+      <app-aem-embed [url]="bannerUrl"></app-aem-embed>
+    }
+    <app-hero [title]="title" [image]="image" [content]="content"></app-hero>
     @if (featuredServices && featuredServices.length) {
       <app-teaser-section [title]="'Featured Services'" [cfs]="featuredServices"></app-teaser-section>
     }

@@ -1,21 +1,24 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, KeyValuePipe } from '@angular/common';
-import { HeroComponent } from '../../features/home/components/hero/hero.component';
 import { SelectorButtonComponent } from '../../shared/components/selector-button/selector-button.component';
 import { TeaserSectionComponent } from '../../features/home/components/teaser-section/teaser-section.component';
 import { CallToActionSectionComponent } from '../../features/home/components/call-to-action-section/call-to-action-section.component';
+import { HeroComponent } from '../../features/home/components/hero/hero.component';
+import { AemEmbedComponent } from '../../shared/components/aem-embed/aem-embed.component';
 import { ApiService } from '../../core/services/api.service';
 import { snakeCaseToTitleCase } from '../../shared/utils/snake-case-to-title-case';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     KeyValuePipe,
-    HeroComponent,
     SelectorButtonComponent,
+    HeroComponent,
+    AemEmbedComponent,
     TeaserSectionComponent,
     CallToActionSectionComponent
   ],
@@ -90,5 +93,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   get featuredServices(): unknown[] {
     return (this.data?.['featuredServices'] as unknown[]) || [];
+  }
+
+  /** Banner embed URL from page data (variation-specific). Fallbacks when not in CMS. */
+  get bannerUrl(): string {
+    const raw = this.data?.['bannerUrl'] ?? this.data?.['banner'];
+    if (typeof raw === 'string') return raw;
+    const obj = raw as { _dynamicUrl?: string } | undefined;
+    if (obj?._dynamicUrl) return obj._dynamicUrl;
+    if (this.selectedVariation === 'master') {
+      return 'https://main--embed-example--aemsites.aem.page/banners/banner1';
+    }
+    if (this.selectedVariation === 'investment_services') {
+      return 'https://main--embed-example--aemsites.aem.page/banners/banner2';
+    }
+    if (this.selectedVariation === 'business_banking') {
+      return 'https://main--embed-example--aemsites.aem.page/banners/banner3';
+    }
+    return '';
   }
 }
