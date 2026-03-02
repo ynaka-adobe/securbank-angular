@@ -9,7 +9,10 @@
         </app-selector-button>
       }
     </div>
-    <aem-embed url="https://main--embed-example--aemsites.aem.page/banners/banner1"></aem-embed>
+    @if (bannerUrl) {
+      <app-aem-embed [url]="bannerUrl"></app-aem-embed>
+    }
+    <app-hero [title]="title" [image]="image" [content]="content"></app-hero>
     @if (featuredServices && featuredServices.length) {
       <app-teaser-section [title]="'Featured Services'" [cfs]="featuredServices"></app-teaser-section>
     }
