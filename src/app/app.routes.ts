@@ -6,6 +6,7 @@ import { ArticleDetailComponent } from './pages/article-detail/article-detail.co
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ContentRedirectComponent } from './pages/content-redirect/content-redirect.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
+import { CookieTestComponent } from './pages/cookie-test/cookie-test.component';
 
 export const routes: Routes = [
   { path: 'content', pathMatch: 'prefix', component: ContentRedirectComponent },
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'articles/:slug', component: ArticleDetailComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'services/:slug', component: ServicesComponent },
+  { path: 'cookie-test', component: CookieTestComponent },
   { path: '**', component: NotFoundComponent }
 ];

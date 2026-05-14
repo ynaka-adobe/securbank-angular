@@ -1,0 +1,168 @@
+@use '../../../styles/variables' as *;
+
+.cookie-test {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  color: $color-grey-0;
+  line-height: 1.5;
+
+  h1 {
+    margin: 0 0 0.5rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
+  .lead {
+    margin: 0 0 1.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+  }
+
+  section {
+    margin-bottom: 1.75rem;
+    padding: 1.25rem;
+    border-radius: 8px;
+    border: 1px solid $color-grey-100;
+    background: $color-secondary-100;
+  }
+
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  input[type='text'] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid $color-grey-100;
+    border-radius: 6px;
+    background: $color-grey-0;
+    color: #111;
+    font-size: 0.95rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    padding: 0.45rem 0.85rem;
+    border: 1px solid $color-grey-100;
+    border-radius: 6px;
+    background: $color-primary-300;
+    color: $color-secondary-300;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      background: $color-primary-100;
+    }
+
+    &.secondary {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.9);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+    }
+  }
+
+  .meta {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+
+    li {
+      margin-bottom: 0.35rem;
+    }
+  }
+
+  .status {
+    margin: 0 0 1rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    background: rgba(0, 0, 0, 0.2);
+
+    &--ok {
+      border-left: 3px solid #6bcb77;
+    }
+
+    &--warn {
+      border-left: 3px solid #eac54f;
+    }
+
+    &--err {
+      border-left: 3px solid #f07167;
+    }
+
+    &--info {
+      border-left: 3px solid rgba(255, 255, 255, 0.35);
+    }
+  }
+
+  pre {
+    margin: 0;
+    padding: 0.75rem;
+    overflow: auto;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.35);
+    font-size: 0.8rem;
+    line-height: 1.45;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  th,
+  td {
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    width: 28%;
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 500;
+  }
+
+  .nav-back {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    color: $color-primary-300;
+    font-size: 0.9rem;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
