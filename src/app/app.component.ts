@@ -1,4 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Meta } from '@angular/platform-browser';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -35,6 +37,8 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent {
   private readonly router = inject(Router);
+  private readonly meta = inject(Meta);
+  private readonly document = inject(DOCUMENT);
 
   /** No site chrome so /cookie-test fits small/iframed viewports. */
   readonly cookieLabMinimalShell = signal(this.isCookieTestRoute());
@@ -44,9 +48,33 @@ export class AppComponent {
   embedFooterUrl = environment.aemEmbedFooterUrl || '';
 
   constructor() {
+    this.installUniversalEditor();
     this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd)).subscribe(() => {
       this.cookieLabMinimalShell.set(this.isCookieTestRoute());
     });
+  }
+
+  /**
+   * Universal Editor (same pattern as SecurBank React):
+   * CORS helper + AEM connection meta pointing at author (or "/" when using local proxy).
+   * @see https://github.com/ynakagawa/SecurBank
+   */
+  private installUniversalEditor(): void {
+    const aemConnectionUrl = environment.useProxy ? '/' : environment.hostUri;
+    this.meta.updateTag({
+      name: 'urn:adobe:aue:system:aemconnection',
+      content: `aem:${aemConnectionUrl}`
+    });
+
+    const head = this.document.head;
+    if (head.querySelector('script[data-aem-ue-cors]')) {
+      return;
+    }
+    const script = this.document.createElement('script');
+    script.src = 'https://universal-editor-service.adobe.io/cors.js';
+    script.async = true;
+    script.setAttribute('data-aem-ue-cors', 'true');
+    head.appendChild(script);
   }
 
   private isCookieTestRoute(): boolean {
