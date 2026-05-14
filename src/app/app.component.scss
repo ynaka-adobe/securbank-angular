@@ -17,10 +17,19 @@
   font-family: $font-family-inter-tight;
   font-size: $font-size-xlarge;
   font-weight: $font-weight-regular;
+
+  &.app--cookie-lab {
+    min-height: auto;
+  }
 }
 
 main {
   flex: 1;
+
+  .app--cookie-lab > & {
+    flex: 0 0 auto;
+    padding: 0;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {

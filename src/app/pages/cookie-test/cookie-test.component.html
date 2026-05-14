@@ -1,67 +1,78 @@
 <div class="cookie-test">
-  <a routerLink="/" class="nav-back">← Home</a>
+  <div class="cookie-test__top">
+    <div class="cookie-test__title-row">
+      <h1 class="cookie-test__h1">Cookie lab</h1>
+      <a routerLink="/" class="cookie-test__home">Home</a>
+    </div>
+    <p class="cookie-test__one-liner">
+      <code>document.cookie</code> with <strong>Secure</strong>, <strong>SameSite=None</strong>, optional
+      <strong>Partitioned</strong>. HttpOnly not shown.
+    </p>
+    <div class="cookie-test__env" role="status">
+      <span><span class="cookie-test__env-k">secureCtx</span> {{ isSecureContext }}</span>
+      <span class="cookie-test__dot" aria-hidden="true">·</span>
+      <span><span class="cookie-test__env-k">cookies</span> {{ cookieEnabled }}</span>
+      <span class="cookie-test__dot" aria-hidden="true">·</span>
+      <span class="cookie-test__env-tip" title="Partitioned cookies are most interesting when this page is embedded cross-site.">
+        cross-site iframe → partition
+      </span>
+    </div>
+  </div>
 
-  <h1>Cookie lab (SameSite=None, Secure, Partitioned)</h1>
-  <p class="lead">
-    Sets <code>document.cookie</code> with <strong>Secure</strong> and <strong>SameSite=None</strong>, optionally with
-    <strong>Partitioned</strong> (CHIPS). Reading is via <code>document.cookie</code> only—HttpOnly cookies never appear
-    here.
-  </p>
-
-  <section>
-    <h2>Environment</h2>
-    <ul class="meta">
-      <li><strong>window.isSecureContext:</strong> {{ isSecureContext }}</li>
-      <li><strong>navigator.cookieEnabled:</strong> {{ cookieEnabled }}</li>
-      <li>
-        <strong>Partitioned note:</strong> In a top-level tab, partitioned cookies behave like first-party cookies.
-        To observe cross-site partition behavior, embed this route in an iframe on another origin.
-      </li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Set / clear</h2>
+  <div class="cookie-test__panel">
     @if (statusMessage) {
-      <p class="status" [class.status--ok]="statusKind === 'ok'" [class.status--warn]="statusKind === 'warn'" [class.status--err]="statusKind === 'err'" [class.status--info]="statusKind === 'info'">
+      <p
+        class="cookie-test__status"
+        [attr.title]="statusMessage"
+        [class.cookie-test__status--ok]="statusKind === 'ok'"
+        [class.cookie-test__status--warn]="statusKind === 'warn'"
+        [class.cookie-test__status--err]="statusKind === 'err'"
+        [class.cookie-test__status--info]="statusKind === 'info'"
+      >
         {{ statusMessage }}
       </p>
     }
 
-    <label for="cookie-name">Cookie name (sanitized to cookie-token characters)</label>
-    <input id="cookie-name" name="cookieName" type="text" [(ngModel)]="cookieName" autocomplete="off" />
-
-    <label for="cookie-value">Cookie value</label>
-    <input id="cookie-value" name="cookieValue" type="text" [(ngModel)]="cookieValue" autocomplete="off" />
-
-    <div class="actions">
-      <button type="button" (click)="setPartitioned()">Set (SameSite=None + Secure + Partitioned)</button>
-      <button type="button" class="secondary" (click)="setSameSiteNoneOnly()">Set (SameSite=None + Secure only)</button>
-      <button type="button" class="secondary" (click)="clearTestCookie()">Clear this name</button>
-      <button type="button" class="secondary" (click)="refreshReadout()">Refresh readout</button>
+    <div class="cookie-test__fields">
+      <div class="cookie-test__field">
+        <label for="cookie-name">Name</label>
+        <input id="cookie-name" name="cookieName" type="text" [(ngModel)]="cookieName" autocomplete="off" />
+      </div>
+      <div class="cookie-test__field">
+        <label for="cookie-value">Value</label>
+        <input id="cookie-value" name="cookieValue" type="text" [(ngModel)]="cookieValue" autocomplete="off" />
+      </div>
     </div>
-  </section>
 
-  <section>
-    <h2><code>document.cookie</code> (raw)</h2>
-    <pre>{{ rawDocumentCookie || '(empty)' }}</pre>
-  </section>
+    <div class="cookie-test__actions">
+      <button type="button" (click)="setPartitioned()">+ Partitioned</button>
+      <button type="button" class="secondary" (click)="setSameSiteNoneOnly()">SameSite=None only</button>
+      <button type="button" class="secondary" (click)="clearTestCookie()">Clear</button>
+      <button type="button" class="secondary" (click)="refreshReadout()">Refresh</button>
+    </div>
 
-  <section>
-    <h2>Parsed pairs</h2>
-    @if (parsedCookies.length === 0) {
-      <pre>(no pairs)</pre>
-    } @else {
-      <table>
-        <tbody>
-          @for (row of parsedCookies; track row.name) {
-            <tr>
-              <th>{{ row.name }}</th>
-              <td>{{ row.value }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    }
-  </section>
+    <div class="cookie-test__readout">
+      <div class="cookie-test__readout-col">
+        <h2 class="cookie-test__h2"><code>document.cookie</code></h2>
+        <pre class="cookie-test__pre">{{ rawDocumentCookie || '(empty)' }}</pre>
+      </div>
+      <div class="cookie-test__readout-col">
+        <h2 class="cookie-test__h2">Pairs</h2>
+        @if (parsedCookies.length === 0) {
+          <pre class="cookie-test__pre cookie-test__pre--muted">(none)</pre>
+        } @else {
+          <table class="cookie-test__table">
+            <tbody>
+              @for (row of parsedCookies; track row.name) {
+                <tr>
+                  <th scope="row">{{ row.name }}</th>
+                  <td>{{ row.value }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    </div>
+  </div>
 </div>
