@@ -55,16 +55,19 @@ export class AppComponent {
   }
 
   /**
-   * Universal Editor (same pattern as SecurBank React):
-   * CORS helper + AEM connection meta pointing at author (or "/" when using local proxy).
-   * @see https://github.com/ynakagawa/SecurBank
+   * Universal Editor (same pattern as SecurBank React for CORS script).
+   * AEM connection must be the real author origin. Using <code>aem:/</code> on
+   * <code>localhost</code> makes UE treat the dev server as AEM and breaks the shell
+   * (e.g. menu rail 500s) because persistence/metadata cannot reach your author.
    */
   private installUniversalEditor(): void {
-    const aemConnectionUrl = environment.useProxy ? '/' : environment.hostUri;
-    this.meta.updateTag({
-      name: 'urn:adobe:aue:system:aemconnection',
-      content: `aem:${aemConnectionUrl}`
-    });
+    const hostUri = (environment.hostUri || '').replace(/\/$/, '');
+    if (hostUri) {
+      this.meta.updateTag({
+        name: 'urn:adobe:aue:system:aemconnection',
+        content: `aem:${hostUri}`
+      });
+    }
 
     const head = this.document.head;
     if (head.querySelector('script[data-aem-ue-cors]')) {

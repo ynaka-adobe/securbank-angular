@@ -13,7 +13,7 @@ export class ImageComponent {
   @Input() alt = '';
   @Input() className = '';
   @Input() prop = '';
-  @Input() type = 'media';
+  @Input() type = '';
   @Input() label = '';
   @Input() behavior = '';
   @Input() width?: number;

@@ -4,6 +4,29 @@
  * https://www.hlx.live/developer/block-collection/TBD
  */
 
+/**
+ * Map page origins to same-origin proxy paths (set in index.html for localhost).
+ * Dynamic import() of cross-origin ES modules requires CORS; proxy avoids that during ng serve.
+ */
+function resolveAemEmbedAssetBase(pageOrigin) {
+  const map = typeof window !== 'undefined' ? window.__AEM_EMBED_PROXY_MAP__ : null;
+  if (map && map[pageOrigin] && window.location && window.location.origin) {
+    return window.location.origin + map[pageOrigin];
+  }
+  return pageOrigin;
+}
+
+function resolveAemEmbedFetchUrl(absoluteUrl) {
+  try {
+    const u = new URL(absoluteUrl);
+    const base = resolveAemEmbedAssetBase(u.origin);
+    if (base === u.origin) return absoluteUrl;
+    return base + u.pathname + u.search + u.hash;
+  } catch {
+    return absoluteUrl;
+  }
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export class AEMEmbed extends HTMLElement {
   constructor() {
@@ -21,8 +44,8 @@ export class AEMEmbed extends HTMLElement {
     [window.hlx.codeBasePath] = new URL(import.meta.url).pathname.split('/scripts/');
   }
 
-  async loadBlock(body, block, blockName, origin) {
-    const blockCss = `${origin}/blocks/${blockName}/${blockName}.css`;
+  async loadBlock(body, block, blockName, assetBase) {
+    const blockCss = `${assetBase}/blocks/${blockName}/${blockName}.css`;
     if (!body.querySelector(`link[href="${blockCss}"]`)) {
       const link = document.createElement('link');
       link.setAttribute('rel', 'stylesheet');
@@ -39,7 +62,7 @@ export class AEMEmbed extends HTMLElement {
     }
 
     try {
-      const blockScriptUrl = `${origin}/blocks/${blockName}/${blockName}.js`;
+      const blockScriptUrl = `${assetBase}/blocks/${blockName}/${blockName}.js`;
       // eslint-disable-next-line no-await-in-loop
       const decorateBlock = await import(blockScriptUrl);
       if (decorateBlock.default) {
@@ -52,13 +75,13 @@ export class AEMEmbed extends HTMLElement {
     }
   }
 
-  async handleHeader(htmlText, body, origin) {
-    await this.pseudoDecorateMain(htmlText, body, origin);
+  async handleHeader(htmlText, body, assetBase) {
+    await this.pseudoDecorateMain(htmlText, body, assetBase);
     
     const main = body.querySelector('main');
     const header = document.createElement('header');
     body.append(header);
-    const { buildBlock } = await import(`${origin}/scripts/aem.js`);
+    const { buildBlock } = await import(`${assetBase}/scripts/aem.js`);
     const block = buildBlock('header', '');
     header.append(block);
 
@@ -68,7 +91,7 @@ export class AEMEmbed extends HTMLElement {
     while (main.firstElementChild) nav.append(main.firstElementChild);
     main.remove();
 
-    await this.loadBlock(body, block, 'header', origin);
+    await this.loadBlock(body, block, 'header', assetBase);
 
     block.dataset.blockStatus = 'loaded';
 
@@ -76,13 +99,13 @@ export class AEMEmbed extends HTMLElement {
     body.classList.add('appear');
   }
 
-  async handleFooter(htmlText, body, origin) {
-    await this.pseudoDecorateMain(htmlText, body, origin);
+  async handleFooter(htmlText, body, assetBase) {
+    await this.pseudoDecorateMain(htmlText, body, assetBase);
     
     const main = body.querySelector('main');
     const footer = document.createElement('footer');
     body.append(footer);
-    const { buildBlock } = await import(`${origin}/scripts/aem.js`);
+    const { buildBlock } = await import(`${assetBase}/scripts/aem.js`);
     const block = buildBlock('footer', '');
     footer.append(block);
 
@@ -92,25 +115,25 @@ export class AEMEmbed extends HTMLElement {
     while (main.firstElementChild) nav.append(main.firstElementChild);
     main.remove();
 
-    await this.loadBlock(body, block, 'footer', origin);
+    await this.loadBlock(body, block, 'footer', assetBase);
 
     block.dataset.blockStatus = 'loaded';
     body.classList.add('appear');
   }
 
-  async pseudoDecorateMain(htmlText, body, origin) {
+  async pseudoDecorateMain(htmlText, body, assetBase) {
     const main = document.createElement('main');
     body.append(main);
     main.innerHTML = htmlText;
 
     try {
-      const mod = await import(`${origin}/scripts/scripts.js`);
-      window.hlx.codeBasePath = origin;
+      const mod = await import(`${assetBase}/scripts/scripts.js`);
+      window.hlx.codeBasePath = assetBase;
       if (mod.decorateMain) {
         await mod.decorateMain(main, true);
       }
     } catch {
-      window.hlx.codeBasePath = origin;
+      window.hlx.codeBasePath = assetBase;
     }
 
     // Query all the blocks (Franklin adds .block; Author Kit etc. use block-name as first class)
@@ -126,7 +149,7 @@ export class AEMEmbed extends HTMLElement {
           ? block.dataset.blockName || block.classList.item(1)
           : block.classList.item(0);
         if (blockName && blockName !== 'block') {
-          await this.loadBlock(body, block, blockName, origin);
+          await this.loadBlock(body, block, blockName, assetBase);
         }
       }
     }
@@ -141,8 +164,8 @@ export class AEMEmbed extends HTMLElement {
     
   }
 
-  async handleMain(htmlText, body, origin) {
-    await this.pseudoDecorateMain(htmlText, body, origin);
+  async handleMain(htmlText, body, assetBase) {
+    await this.pseudoDecorateMain(htmlText, body, assetBase);
     body.classList.add('appear');
     body.style.display = 'block';
     body.style.visibility = 'visible';
@@ -170,20 +193,23 @@ export class AEMEmbed extends HTMLElement {
 
         const url = urlAttribute.value;
         const plainUrl = url.endsWith('/') ? `${url}index.plain.html` : `${url}.plain.html`;
-        const { href, origin } = new URL(plainUrl);
+        const plain = new URL(plainUrl);
+        const { href } = plain;
+        const pageOrigin = plain.origin;
+        const assetBase = resolveAemEmbedAssetBase(pageOrigin);
 
         savedCodeBasePath = window.hlx.codeBasePath;
-        window.hlx.codeBasePath = origin;
+        window.hlx.codeBasePath = assetBase;
 
-        // Load fragment
-        const resp = await fetch(href);
+        // Load fragment (proxied URL on localhost when __AEM_EMBED_PROXY_MAP__ is set)
+        const resp = await fetch(resolveAemEmbedFetchUrl(href));
         if (!resp.ok) {
           throw new Error(`Unable to fetch ${href}`);
         }
 
         const styles = document.createElement('link');
         styles.setAttribute('rel', 'stylesheet');
-        styles.setAttribute('href', `${origin}/styles/styles.css`);
+        styles.setAttribute('href', `${assetBase}/styles/styles.css`);
         const stylesLoaded = new Promise((resolve) => {
           styles.onload = () => { body.style = ''; resolve(); };
           styles.onerror = resolve;
@@ -192,20 +218,20 @@ export class AEMEmbed extends HTMLElement {
         await stylesLoaded;
 
         let htmlText = await resp.text();
-        // Fix relative/same-origin image and media urls
-        htmlText = htmlText.replace(/\.\/media/g, `${origin}/media`);
-        htmlText = htmlText.replace(/(["'])\/media\//g, `$1${origin}/media/`);
+        // Fix relative/same-origin image and media urls (keep real page origin for asset URLs in markup)
+        htmlText = htmlText.replace(/\.\/media/g, `${pageOrigin}/media`);
+        htmlText = htmlText.replace(/(["'])\/media\//g, `$1${pageOrigin}/media/`);
 
         // Set initialized to true so we don't run through this again
         this.initialized = true;
  
-        if (type === 'main') await this.handleMain(htmlText, body, origin);
-        if (type === 'header') await this.handleHeader(htmlText, body, origin);
-        if (type === 'footer') await this.handleFooter(htmlText, body, origin);
+        if (type === 'main') await this.handleMain(htmlText, body, assetBase);
+        if (type === 'header') await this.handleHeader(htmlText, body, assetBase);
+        if (type === 'footer') await this.handleFooter(htmlText, body, assetBase);
 
         const fonts = document.createElement('link');
         fonts.setAttribute('rel', 'stylesheet');
-        fonts.setAttribute('href', `${origin}/styles/fonts.css`);
+        fonts.setAttribute('href', `${assetBase}/styles/fonts.css`);
         this.shadowRoot.appendChild(fonts);
 
         window.hlx.codeBasePath = savedCodeBasePath;

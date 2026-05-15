@@ -1,5 +1,5 @@
 @if (data) {
-  <main class="article-detail-page">
+  <main class="article-detail-page" [attr.data-aue-resource]="articleResourceUrn">
     @if (image) {
       <div class="article-detail-image-wrapper">
         <app-image [src]="image" alt="" prop="image" class-name="article-detail-image" [width]="498" [height]="398" objectFit="cover"></app-image>

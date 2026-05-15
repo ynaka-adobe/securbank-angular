@@ -93,7 +93,10 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "proxyConfig": "proxy.conf.js"
+            "proxyConfig": "proxy.conf.js",
+            "headers": {
+              "Content-Security-Policy": "frame-ancestors 'self' https://experience.adobe.com https://experience-assets.adobe.com https://*.adobe.com;"
+            }
           },
           "configurations": {
             "production": {
@@ -101,6 +104,10 @@
             },
             "development": {
               "buildTarget": "securbank-angular:build:development"
+            },
+            "https": {
+              "buildTarget": "securbank-angular:build:development",
+              "ssl": true
             }
           },
           "defaultConfiguration": "development"

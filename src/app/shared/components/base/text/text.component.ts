@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-text',
   standalone: true,
   imports: [CommonModule],
-  template: '<p *ngIf="hasPlaintext" [class]="className" [attr.data-aue-prop]="prop" [attr.data-aue-label]="displayLabel">{{ content?.plaintext }}</p><div *ngIf="hasHtml && !hasPlaintext" [class]="className" [attr.data-aue-prop]="prop" [attr.data-aue-label]="displayLabel" [innerHTML]="content?.html"></div><ng-content *ngIf="!hasPlaintext && !hasHtml"></ng-content>'
+  template: '<div *ngIf="hasPlaintext" [class]="className" [attr.data-aue-prop]="prop" data-aue-type="text" [attr.data-aue-label]="displayLabel">{{ content?.plaintext }}</div><div *ngIf="hasHtml && !hasPlaintext" [class]="className" [attr.data-aue-prop]="prop" data-aue-type="richtext" [attr.data-aue-label]="displayLabel" [innerHTML]="content?.html"></div><ng-content *ngIf="!hasPlaintext && !hasHtml"></ng-content>'
 })
 export class TextComponent {
   @Input() content: { plaintext?: string; html?: string } | null = null;

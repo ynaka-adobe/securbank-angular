@@ -6,6 +6,7 @@ import { TextComponent } from '../../shared/components/base/text/text.component'
 import { ArticlesSectionComponent } from '../../features/articles/components/articles-section/articles-section.component';
 import { CallToActionSectionComponent } from '../../features/home/components/call-to-action-section/call-to-action-section.component';
 import { ApiService } from '../../core/services/api.service';
+import { ueCfResourceUrn } from '../../shared/utils/ue-cf-resource-urn';
 
 @Component({
   selector: 'app-article-detail',
@@ -48,5 +49,13 @@ export class ArticleDetailComponent implements OnInit {
 
   get content(): { plaintext?: string; html?: string } | null {
     return (this.data?.['content'] as { plaintext?: string; html?: string }) || null;
+  }
+
+  get articleResourceUrn(): string | null {
+    const path = this.data?.['_path'] as string | undefined;
+    const variation = this.data?.['_variation'] as string | undefined;
+    if (!path?.trim()) return null;
+    const urn = ueCfResourceUrn(path, variation);
+    return urn || null;
   }
 }

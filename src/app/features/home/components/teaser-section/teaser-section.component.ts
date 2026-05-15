@@ -12,6 +12,8 @@ import { ContainerComponent } from '../../../../shared/components/base/container
 export class TeaserSectionComponent {
   @Input() title = '';
   @Input() cfs: unknown[] = [];
+  /** Universal Editor container filter (SecurBank: <code>featured-services</code> | <code>related-articles</code>). */
+  @Input() containerFilter = 'featured-services';
   @Input() containerProps: Record<string, unknown> = {};
   @Output() fetchTrigger = new EventEmitter<void>();
 }

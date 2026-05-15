@@ -6,6 +6,7 @@
     "prestart": "node scripts/load-env.js",
     "prebuild": "node scripts/load-env.js",
     "start": "npx ng serve",
+    "start:https": "node scripts/load-env.js && npx ng serve --configuration https",
     "build": "npx ng build",
     "watch": "npx ng build --watch --configuration development",
     "test": "npx ng test"

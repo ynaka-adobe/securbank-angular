@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SecurBank Angular (embedded)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--
+    Static page (not built by Angular). Served from the same host as the SPA, e.g.:
+      http://localhost:4200/embed-angular-app.html
+    Optional query: ?path=/cookie-test  (default path is /)
+    Must be opened via your dev server or deployment URL, not as a file:// URL.
+
+    Top panel reads document.cookie for this shell and for the iframe (same-origin only).
+    HttpOnly cookies never appear. Partitioned / third-party rules may hide some values.
+  -->
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      background: #0f172a;
+      color: #e2e8f0;
+      font: 13px/1.4 system-ui, sans-serif;
+    }
+    .layout {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .cookie-panel {
+      flex: 0 0 auto;
+      max-height: 38vh;
+      overflow: auto;
+      padding: 10px 12px 12px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      background: #1e293b;
+    }
+    .cookie-panel h1 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #f8fafc;
+    }
+    .cookie-panel .row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .cookie-panel button {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #334155;
+      color: #f1f5f9;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .cookie-panel button:hover {
+      background: #475569;
+    }
+    .cookie-panel .hint {
+      font-size: 11px;
+      color: #94a3b8;
+      margin: 0 0 8px;
+    }
+    .cookie-block {
+      margin-bottom: 10px;
+    }
+    .cookie-block:last-child {
+      margin-bottom: 0;
+    }
+    .cookie-block h2 {
+      margin: 0 0 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #94a3b8;
+    }
+    .cookie-block pre {
+      margin: 0;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: #0f172a;
+      font-size: 11px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: #cbd5e1;
+    }
+    .cookie-block table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+    .cookie-block th,
+    .cookie-block td {
+      padding: 3px 6px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid rgba(71, 85, 105, 0.5);
+    }
+    .cookie-block th {
+      width: 22%;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .frame-wrap {
+      flex: 1 1 auto;
+      min-height: 0;
+      position: relative;
+      background: #fff;
+    }
+    iframe {
+      border: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      vertical-align: top;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <div class="cookie-panel" id="cookie-panel">
+      <h1>Embed shell — cookie readout</h1>
+      <p class="hint">
+        Same-origin iframe only: values below come from <code>document.cookie</code> (no HttpOnly).
+        Use <a href="?path=/cookie-test" style="color:#7dd3fc">?path=/cookie-test</a> to exercise the cookie lab inside the frame.
+      </p>
+      <div class="row">
+        <button type="button" id="btn-refresh">Refresh cookie readout</button>
+        <label style="font-size:12px;color:#94a3b8;display:inline-flex;align-items:center;gap:6px;">
+          <input type="checkbox" id="chk-poll" checked /> Auto-refresh every 2s
+        </label>
+      </div>
+      <div class="cookie-block">
+        <h2>Top frame (this page)</h2>
+        <div id="parent-raw"></div>
+        <div id="parent-table"></div>
+      </div>
+      <div class="cookie-block">
+        <h2>Iframe (Angular app)</h2>
+        <div id="iframe-raw"></div>
+        <div id="iframe-table"></div>
+      </div>
+    </div>
+    <div class="frame-wrap">
+      <iframe id="angular-app" title="SecurBank Angular application"></iframe>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var path = params.get('path') || '/';
+      if (!path.startsWith('/')) {
+        path = '/' + path;
+      }
+      var iframe = document.getElementById('angular-app');
+      iframe.src = window.location.origin + path;
+
+      function parseCookieHeader(header) {
+        if (!header || !String(header).trim()) {
+          return [];
+        }
+        return String(header).split(';').map(function (part) {
+          var i = part.indexOf('=');
+          if (i === -1) {
+            return { name: part.trim(), value: '' };
+          }
+          return { name: part.slice(0, i).trim(), value: part.slice(i + 1).trim() };
+        });
+      }
+
+      function renderBlock(rawEl, tableEl, raw, pairs, err) {
+        if (err) {
+          rawEl.innerHTML = '<pre>' + escapeHtml(err) + '</pre>';
+          tableEl.innerHTML = '';
+          return;
+        }
+        rawEl.innerHTML = '<pre>' + escapeHtml(raw || '(empty)') + '</pre>';
+        if (pairs.length === 0) {
+          tableEl.innerHTML = '<pre style="margin-top:4px;opacity:.7">(no name=value pairs)</pre>';
+          return;
+        }
+        var rows = pairs
+          .map(function (p) {
+            return (
+              '<tr><th scope="row">' +
+              escapeHtml(p.name) +
+              '</th><td>' +
+              escapeHtml(p.value) +
+              '</td></tr>'
+            );
+          })
+          .join('');
+        tableEl.innerHTML = '<table><tbody>' + rows + '</tbody></table>';
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function updateCookies() {
+        var parentRaw = document.cookie || '';
+        renderBlock(
+          document.getElementById('parent-raw'),
+          document.getElementById('parent-table'),
+          parentRaw,
+          parseCookieHeader(parentRaw),
+          null
+        );
+
+        var iframeErr = null;
+        var iframeRaw = '';
+        try {
+          if (iframe.contentWindow && iframe.contentWindow.document) {
+            iframeRaw = iframe.contentWindow.document.cookie || '';
+          } else {
+            iframeErr = 'Iframe document not available yet.';
+          }
+        } catch (e) {
+          iframeErr =
+            'Cannot read iframe cookies (cross-origin or blocked): ' + (e && e.message ? e.message : String(e));
+        }
+        renderBlock(
+          document.getElementById('iframe-raw'),
+          document.getElementById('iframe-table'),
+          iframeRaw,
+          parseCookieHeader(iframeRaw),
+          iframeErr
+        );
+      }
+
+      document.getElementById('btn-refresh').addEventListener('click', updateCookies);
+      iframe.addEventListener('load', updateCookies);
+
+      var pollId = null;
+      function setPolling(on) {
+        if (pollId) {
+          clearInterval(pollId);
+          pollId = null;
+        }
+        if (on) {
+          pollId = setInterval(updateCookies, 2000);
+        }
+      }
+      document.getElementById('chk-poll').addEventListener('change', function () {
+        setPolling(this.checked);
+      });
+      setPolling(document.getElementById('chk-poll').checked);
+      updateCookies();
+    })();
+  </script>
+</body>
+</html>

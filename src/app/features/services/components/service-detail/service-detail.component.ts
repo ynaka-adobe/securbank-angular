@@ -4,6 +4,7 @@ import { TitleComponent } from '../../../../shared/components/base/title/title.c
 import { TextComponent } from '../../../../shared/components/base/text/text.component';
 import { RedirectButtonComponent } from '../../../../shared/components/redirect-button/redirect-button.component';
 import { ApiService } from '../../../../core/services/api.service';
+import { ueCfResourceUrn } from '../../../../shared/utils/ue-cf-resource-urn';
 
 @Component({
   selector: 'app-service-detail',
@@ -42,5 +43,13 @@ export class ServiceDetailComponent implements OnInit {
 
   get category(): string {
     return (this.data?.['serviceCategory'] as { name?: string })?.name || '';
+  }
+
+  get serviceResourceUrn(): string | null {
+    const path = this.data?.['_path'] as string | undefined;
+    const variation = this.data?.['_variation'] as string | undefined;
+    if (!path?.trim()) return null;
+    const urn = ueCfResourceUrn(path, variation);
+    return urn || null;
   }
 }

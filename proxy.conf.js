@@ -37,7 +37,16 @@ const securbankProxy = {
   }
 };
 
+/** Same-origin proxy for Edge Delivery / *.aem.page assets (avoids CORS on dynamic import() during ng serve). */
+const aemEmbedExample = {
+  target: 'https://main--embed-example--aemsites.aem.page',
+  secure: true,
+  changeOrigin: true,
+  pathRewrite: { '^/aem-embed-proxy/embed-example': '' }
+};
+
 module.exports = {
   '/graphql': securbankProxy,
-  '/adobe': securbankProxy
+  '/adobe': securbankProxy,
+  '/aem-embed-proxy/embed-example': aemEmbedExample
 };

@@ -9,7 +9,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="/scripts/aem-embed.js" type="module"></script>
+  <!-- Universal Editor: definitions aligned with https://github.com/ynakagawa/SecurBank (public/static) -->
+  <script type="application/vnd.adobe.aue.component+json" src="/static/component-definition.json"></script>
+  <script type="application/vnd.adobe.aue.filter+json" src="/static/filter-definition.json"></script>
+  <script type="application/vnd.adobe.aue.model+json" src="/static/model-definition.json"></script>
+  <!-- Local dev: route aem.page module/CSS through ng serve proxy (see proxy.conf.js) to avoid CORS on import() -->
+  <script>
+    (function () {
+      var h = typeof location !== 'undefined' ? location.hostname : '';
+      if (h === 'localhost' || h === '127.0.0.1') {
+        window.__AEM_EMBED_PROXY_MAP__ = Object.assign({}, window.__AEM_EMBED_PROXY_MAP__ || {}, {
+          'https://main--embed-example--aemsites.aem.page': '/aem-embed-proxy/embed-example'
+        });
+      }
+    })();
+  </script>
+  <!-- aem-embed.js: loaded from main.ts so Vite does not pre-transform /scripts/... as repo-root -->
 </head>
 <body>
   <app-root></app-root>

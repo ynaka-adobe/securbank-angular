@@ -1,5 +1,5 @@
 @if (data) {
-  <section class="service-detail">
+  <section class="service-detail" [attr.data-aue-resource]="serviceResourceUrn">
     @if (image) {
       <div class="service-detail-image-wrapper">
         <app-image [src]="image" alt="" prop="icon" class-name="service-detail-image" [width]="498" [height]="398" objectFit="cover"></app-image>

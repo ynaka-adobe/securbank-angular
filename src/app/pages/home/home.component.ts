@@ -8,6 +8,7 @@ import { HeroComponent } from '../../features/home/components/hero/hero.componen
 import { AemEmbedComponent } from '../../shared/components/aem-embed/aem-embed.component';
 import { ApiService } from '../../core/services/api.service';
 import { snakeCaseToTitleCase } from '../../shared/utils/snake-case-to-title-case';
+import { ueCfResourceUrn } from '../../shared/utils/ue-cf-resource-urn';
 
 @Component({
   selector: 'app-home',
@@ -96,6 +97,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   /** Banner embed URL from page data (variation-specific). Fallbacks when not in CMS. */
+  /** UE: hero/title/text/image need an ancestor with `data-aue-resource` (inheritance). */
+  get pageResourceUrn(): string | null {
+    const path = this.data?.['_path'] as string | undefined;
+    if (!path?.trim()) return null;
+    const urn = ueCfResourceUrn(path, this.selectedVariation);
+    return urn || null;
+  }
+
   get bannerUrl(): string {
     const raw = this.data?.['bannerUrl'] ?? this.data?.['banner'];
     if (typeof raw === 'string') return raw;

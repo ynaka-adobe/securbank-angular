@@ -1,0 +1,104 @@
+{
+  "groups": [
+    {
+      "title": "Content Fragments",
+      "id": "content-fragments",
+      "components": [
+        {
+          "title": "Article",
+          "id": "article",
+          "plugins": {
+            "aem": {
+              "cf": {
+                "name": "article",
+                "cfModel": "/conf/securbank/settings/dam/cfm/models/article",
+                "cfFolder": "/content/dam/securbank/pages/articles",
+                "title": "Article",
+                "template": {
+                  "title": "New Article",
+                  "slug": "new-article",
+                  "image": "/content/dam/securbank/services/default-service-illustration.jpg"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Service",
+          "id": "service",
+          "plugins": {
+            "aem": {
+              "cf": {
+                "name": "service",
+                "cfModel": "/conf/securbank/settings/dam/cfm/models/service",
+                "cfFolder": "/content/dam/securbank/services",
+                "title": "Service",
+                "template": {
+                  "title": "New Service",
+                  "slug": "new-service",
+                  "icon": "/content/dam/securbank/services/default-service-illustration.jpg"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Page (hero)",
+      "id": "page",
+      "components": [
+        {
+          "title": "Text",
+          "id": "text",
+          "model": "text",
+          "plugins": {
+            "aem": {
+              "page": {
+                "resourceType": "wknd/components/text",
+                "template": { "text": "" }
+              }
+            }
+          }
+        },
+        {
+          "title": "Rich text",
+          "id": "richtext",
+          "model": "richtext",
+          "plugins": {
+            "aem": {
+              "page": {
+                "resourceType": "wknd/components/text",
+                "template": { "textIsRich": true, "text": "<p></p>" }
+              }
+            }
+          }
+        },
+        {
+          "title": "Image (media)",
+          "id": "media",
+          "plugins": {
+            "aem": {
+              "page": {
+                "resourceType": "wknd/components/image",
+                "template": {
+                  "fileReference": "/content/dam/securbank/services/default-service-illustration.jpg"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Container",
+          "id": "container",
+          "filter": "container",
+          "plugins": {
+            "aem": {
+              "page": { "resourceType": "wknd/components/container" }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

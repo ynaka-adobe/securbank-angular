@@ -1,5 +1,5 @@
 @if (data && categories[selectedVariation]) {
-  <div class="home-page">
+  <div class="home-page" [attr.data-aue-resource]="pageResourceUrn">
     <div class="selector-buttons">
       @for (item of categories | keyvalue; track item.key) {
         <app-selector-button
