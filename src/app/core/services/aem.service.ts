@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import AEMHeadless from '@adobe/aem-headless-client-js';
 import { environment } from '../../../environments/environment';
+import { graphqlAemHostUri } from '../../shared/utils/aem-content-endpoint';
 import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
@@ -8,9 +9,7 @@ export class AemService {
   private client: AEMHeadless;
 
   constructor(private auth: AuthService) {
-    const serviceURL = environment.useProxy
-      ? '/'
-      : (environment.publishUri || environment.hostUri);
+    const serviceURL = environment.useProxy ? '/' : graphqlAemHostUri();
     this.client = new AEMHeadless({
       serviceURL,
       endpoint: 'graphql/execute.json',
@@ -29,8 +28,13 @@ export class AemService {
 
   addAemHost(url: string): string {
     if (url.startsWith('/')) {
-      const base = environment.publishUri || environment.hostUri;
-    return new URL(url, base).toString();
+      const base = environment.useProxy
+        ? typeof window !== 'undefined'
+          ? window.location.origin
+          : environment.hostUri || environment.publishUri || ''
+        : graphqlAemHostUri();
+      const normalized = base.endsWith('/') ? base : `${base}/`;
+      return new URL(url, normalized).toString();
     }
     return url;
   }

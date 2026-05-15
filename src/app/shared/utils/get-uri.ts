@@ -1,7 +1,10 @@
 import { environment } from '../../../environments/environment';
+import { graphqlAemHostUri } from './aem-content-endpoint';
 
-const publishURI = environment.publishUri || environment.hostUri;
-const serviceURL = environment.useProxy ? '/' : publishURI;
+/** Publish (or host fallback) origin for Dynamic Media delivery URLs only. */
+function dynamicMediaOrigin(): string {
+  return environment.publishUri || environment.hostUri || '';
+}
 
 export interface GetURIOptions {
   width?: number;
@@ -38,15 +41,18 @@ export function getURI(path = '', options?: GetURIOptions): string {
     const result = path ? (path.startsWith('/') ? path : '/' + path) : '/';
     return shouldAppendParams ? appendDynamicMediaParams(result, width, height) : result;
   }
-  // Direct mode: use full AEM URL for dynamic media
+  // Direct mode: Dynamic Media stays on publish delivery
   if (path && path.startsWith('/adobe/dynamicmedia/deliver/')) {
-    return appendDynamicMediaParams(publishURI + path, width, height);
+    return appendDynamicMediaParams(dynamicMediaOrigin() + path, width, height);
   }
   if (path && typeof path === 'string' && path.startsWith('http')) {
     if (path.includes('/adobe/dynamicmedia/deliver/')) {
       const urlPath = path.replace(/^https?:\/\/[^/]+/, '');
-      return appendDynamicMediaParams(publishURI + urlPath, width, height);
+      return appendDynamicMediaParams(dynamicMediaOrigin() + urlPath, width, height);
     }
   }
-  return serviceURL + path;
+  // Other paths: author when embedded in Universal Editor, else publish (see graphqlAemHostUri)
+  const host = graphqlAemHostUri();
+  const suffix = path ? (path.startsWith('/') ? path : `/${path}`) : '';
+  return host + suffix;
 }
