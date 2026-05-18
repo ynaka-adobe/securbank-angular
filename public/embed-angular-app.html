@@ -10,8 +10,9 @@
     Same-origin iframe:
       ?path=/cookie-test   (default path is /)
     Cross-origin iframe (cookie readout for the frame will fail; useful for visual / layout checks):
-      ?url=https://securbank-angular.vercel.app/cookie-test
-    Allowed url hosts: this page's host, localhost, 127.0.0.1, or *.vercel.app (https only, http ok on localhost).
+      ?url=https://main--repo--org.aem.page/dealer-home
+      Shorthand (https:// added if missing): ?url=main--repo--org.aem.page/dealer-home
+    Allowed url hosts: this page's host, localhost, 127.0.0.1, *.vercel.app, or *.aem.page (https only, http ok on localhost).
     If both url and path are present, url wins.
     Must be opened via your dev server or deployment URL, not as a file:// URL.
 
@@ -139,7 +140,9 @@
         Examples:
         <a href="?path=/cookie-test" style="color:#7dd3fc">?path=/cookie-test</a>
         ·
-        <a href="?url=https://securbank-angular.vercel.app/cookie-test" style="color:#7dd3fc">?url=https://securbank-angular.vercel.app/cookie-test</a>
+        <a href="?url=https://securbank-angular.vercel.app/cookie-test" style="color:#7dd3fc">Vercel cookie-test</a>
+        ·
+        <a href="?url=https://main--cat-dealer--ynaka-adobe.aem.page/dealer-home" style="color:#7dd3fc">AEM page (aem.page)</a>
       </p>
       <div class="row">
         <button type="button" id="btn-refresh">Refresh cookie readout</button>
@@ -184,14 +187,22 @@
         if (hostname === window.location.hostname) return true;
         if (hostname === 'localhost' || hostname === '127.0.0.1') return true;
         if (hostname.endsWith('.vercel.app')) return true;
+        if (hostname.endsWith('.aem.page')) return true;
         return false;
+      }
+
+      function normalizeUrlParam(raw) {
+        var s = String(raw).trim();
+        if (!s) return s;
+        if (/^https?:\/\//i.test(s)) return s;
+        return 'https://' + s;
       }
 
       function resolveIframeSrc() {
         var raw = params.get('url');
         if (raw && String(raw).trim()) {
           try {
-            var u = new URL(String(raw).trim());
+            var u = new URL(normalizeUrlParam(raw));
             var isLocal = u.hostname === 'localhost' || u.hostname === '127.0.0.1';
             if (!isLocal && u.protocol !== 'https:') {
               return { src: null, err: 'url must use https (except http(s) on localhost).' };
@@ -203,7 +214,7 @@
               return {
                 src: null,
                 err:
-                  'url host not allowed (use this site\'s host, localhost, 127.0.0.1, or *.vercel.app).'
+                  'url host not allowed (use this site\'s host, localhost, 127.0.0.1, *.vercel.app, or *.aem.page).'
               };
             }
             return { src: u.href, err: null };

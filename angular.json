@@ -95,7 +95,7 @@
           "options": {
             "proxyConfig": "proxy.conf.js",
             "headers": {
-              "Content-Security-Policy": "frame-ancestors 'self' https://experience.adobe.com https://experience-assets.adobe.com https://*.adobe.com;"
+              "Content-Security-Policy": "frame-ancestors 'self' https://experience.adobe.com https://experience-assets.adobe.com https://*.adobe.com https://*.aem.page;"
             }
           },
           "configurations": {
